@@ -169,10 +169,10 @@ int get_type(string s){
     if(is_version(s)){
         if(correct_version(s)) return 1; //"correct version";
         else return 2; //"incorrect version";
-    }else if(is_data(s)) return 3;
-    else if(is_opening(s)) return 4;
-    else if(is_closing(s)) return 5;
-    else if(is_comment(s)) return 6;
+    }else if(is_data(s)) return 3; // inner data
+    else if(is_opening(s)) return 4; // openning tag
+    else if(is_closing(s)) return 5; // closing tag
+    else if(is_comment(s)) return 6; // comment
 
     return -1; //"incorrect tag";
 }
@@ -506,16 +506,6 @@ vector<vector<string>> get_correction(string file_path){
 }
 
 
-vector<string> lines(string path){
-    vector<vector<string>> v = get_correction(path);
-    vector<string> v2;
-    for(int i=0; v.size(); i++){
-        v2.push_back( v[i][2]);
-    }
-
-    return v2;
-}
-
 void create_correct_xml(string file_name,string new_file_name) {
     vector<vector<string> > v = get_correction(file_name);
     ifstream is;
@@ -551,7 +541,7 @@ void create_correct_xml(string file_name,string new_file_name) {
                 getline(is, line);
                 line_index++;
             } else if(v[i][3] == "override"){
-                ofs << line + v[i][1] << endl;
+                ofs << "" << endl; // clear the line
                 getline(is, line);
                 line_index++;
             }
@@ -564,6 +554,4 @@ void create_correct_xml(string file_name,string new_file_name) {
     is.close();
 
 }
-
-
 
